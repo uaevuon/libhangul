@@ -195,6 +195,13 @@ static const HangulCombination hangul_combination_ahn = {
     true
 };
 
+static const HangulCombination hangul_replace_2_noshift = {
+    countof(hangul_replace_table_2_noshift),
+    countof(hangul_replace_table_2_noshift),
+    (HangulCombinationItem*)hangul_replace_table_2_noshift,
+    true
+};
+
 static const HangulCombination hangul_galmadeuli_3shin_p2 = {
     countof(hangul_galmadeuli_table_3shin_p2),
     countof(hangul_galmadeuli_table_3shin_p2),
@@ -329,6 +336,26 @@ static const HangulKeyboard hangul_keyboard_ahn = {
     {NULL, NULL}
 };
 
+
+static const HangulKeyboard hangul_keyboard_2noshift = {
+    (char*)"2noshift",
+    (char*)N_("Dubeolsik Noshift Builtin"),
+    { (ucschar*)hangul_keyboard_table_2, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_2, //기본조합
+      NULL,//추가조합
+      (HangulCombination*)&hangul_replace_2_noshift, //갈마들이조합
+      NULL 
+    },
+    HANGUL_KEYBOARD_TYPE_JAMO,
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
+};
+
+
 static const HangulKeyboard hangul_keyboard_3shin_p2 = {
     (char*)"3shin-p2",
     (char*)N_("Sebeolsik Shin P2"),
@@ -364,6 +391,7 @@ static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_romaja,
     &hangul_keyboard_ahn,
     // 3beol
+    &hangul_keyboard_2noshift,
     &hangul_keyboard_3shin_p2
 };
 static unsigned int hangul_builtin_keyboard_count = countof(hangul_builtin_keyboards);
@@ -1190,8 +1218,8 @@ hangul_keyboard_list_append(HangulKeyboard* keyboard)
 
 
 // 3beol
-#ifndef libhangul_hangulkeyboard_addon_h
-#define libhangul_hangulkeyboard_addon_h
+#ifndef libhangul_hangulkeyboard_addon_c
+#define libhangul_hangulkeyboard_addon_c
 ucschar
 hangul_keyboard_get_replace_it(const HangulKeyboard* keyboard)
 {
@@ -1307,4 +1335,4 @@ hangul_keyboard_get_flag(const HangulKeyboard *keyboard, unsigned int option)
 }
 
 
-#endif /* libhangul_hangulkeyboard_addon_h */
+#endif /* libhangul_hangulkeyboard_addon_c */

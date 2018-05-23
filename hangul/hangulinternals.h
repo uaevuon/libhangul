@@ -60,6 +60,8 @@ ucschar hangul_ascii_to_hanguel_3_yet(int ascii, int step, int press);
 // 3beol inputcontext
 static bool
 hangul_ic_process_jaso_shin_sebeol (HangulInputContext *hic, int ascii, ucschar ch);
+static bool
+hangul_ic_process_jamo_dubeol(HangulInputContext *hic, ucschar ch);
 
 // 3beol keyboard
 ucschar
