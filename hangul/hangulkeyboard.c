@@ -217,9 +217,9 @@ static const HangulKeyboard hangul_keyboard_2 = {
     { (HangulCombination*)&hangul_combination_default_2, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JAMO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -231,9 +231,9 @@ static const HangulKeyboard hangul_keyboard_2y = {
     { (HangulCombination*)&hangul_combination_full, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JAMO_YET,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -245,9 +245,9 @@ static const HangulKeyboard hangul_keyboard_32 = {
     { (HangulCombination*)&hangul_combination_default_2, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -259,9 +259,9 @@ static const HangulKeyboard hangul_keyboard_390 = {
     { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -273,9 +273,9 @@ static const HangulKeyboard hangul_keyboard_3final = {
     { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -287,9 +287,9 @@ static const HangulKeyboard hangul_keyboard_3sun = {
     { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -301,9 +301,9 @@ static const HangulKeyboard hangul_keyboard_3yet = {
     { (HangulCombination*)&hangul_combination_full, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO_YET,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -315,9 +315,9 @@ static const HangulKeyboard hangul_keyboard_romaja = {
     { (HangulCombination*)&hangul_combination_romaja, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_ROMAJA,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -329,14 +329,14 @@ static const HangulKeyboard hangul_keyboard_ahn = {
     { (HangulCombination*)&hangul_combination_ahn, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
 
-
+// 3beol
 static const HangulKeyboard hangul_keyboard_2noshift = {
     (char*)"2noshift",
     (char*)N_("Dubeolsik Noshift Builtin"),
@@ -344,13 +344,32 @@ static const HangulKeyboard hangul_keyboard_2noshift = {
     { (HangulCombination*)&hangul_combination_default_2, //기본조합
       NULL,//추가조합
       (HangulCombination*)&hangul_replace_2_noshift, //갈마들이조합
-      NULL 
+      NULL
     },
     HANGUL_KEYBOARD_TYPE_JAMO,
     true,
-    0x0000, 
+    0x0000,
     {false, false, false, false, false},
-    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
+};
+
+
+static const HangulKeyboard hangul_keyboard_2north9256 = {
+    (char*)"2n9256",
+    (char*)N_("Dubeolsik North 9256"),
+    { (ucschar*)hangul_keyboard_table_2north9256, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_2, //기본조합
+      NULL,//추가조합
+      (HangulCombination*)&hangul_replace_2_noshift, //갈마들이조합
+      NULL
+    },
+    HANGUL_KEYBOARD_TYPE_JAMO,
+    true,
+    0x0000,
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL},
     {NULL, NULL, NULL, NULL},
     {NULL, NULL}
 };
@@ -363,11 +382,12 @@ static const HangulKeyboard hangul_keyboard_3shin_p2 = {
     { (HangulCombination*)&hangul_combination_default_3, //기본조합
       NULL,//추가조합
       (HangulCombination*)&hangul_galmadeuli_3shin_p2, //갈마들이조합
-      NULL 
+      NULL
     },
     HANGUL_KEYBOARD_TYPE_JASO_SHIN,
     true ,
-  0x0000, // replace_it // FALSE
+  // replace_it // FALSE
+  0x0000,
   // 확장배열씀, 갈마들이켜끄기됨, 입력순서〈안〉따짐, 왼/오른ㅗㅜ구분함, 확장겹받침허용〈안〉함
   // flag // 갈마들이는 필수 기능이라 꺼지면 안된다
   {true, false, false, true, true},
