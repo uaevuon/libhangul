@@ -82,6 +82,7 @@ Makefile
 data/Makefile
 data/hanja/Makefile
 data/keyboards/Makefile
+data/keyboards_info/Makefile
 doc/Doxyfile
 hangul/Makefile
 libhangul.pc

@@ -1,1 +1,1 @@
-SUBDIRS = hanja keyboards
+SUBDIRS = hanja keyboards keyboards_info

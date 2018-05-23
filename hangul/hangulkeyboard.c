@@ -24,6 +24,10 @@
 #include <string.h>
 #include <limits.h>
 
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 #if ENABLE_EXTERNAL_KEYBOARDS
 #include <locale.h>
 #include <glob.h>
@@ -34,6 +38,7 @@
 #include "hangul-gettext.h"
 #include "hangul.h"
 #include "hangulinternals.h"
+
 
 /**
  * @file hangulkeyboard.c
@@ -62,6 +67,52 @@
 
 #define HANGUL_KEYBOARD_TABLE_SIZE 0x80
 
+
+
+// 세벌식 확장모드 글쇠
+//0 : 같은 기호 배열을 쓴다 // ㅗ, ㅜ
+const char sebeol_3_symbol_key[] = {'0', 'v', '8', 0x00};
+//1 : 다른 기호 배열을 쓴다// ㅗ, ㅜ 
+const char sebeol_3yet_symbol_key[] = {'1', '/', '9', 0x00};
+// J + [ K, L, : ] //2: 같은 기호배열을 쓰고 준비글쇠가 있다.
+const char sebeol_3moa_symbol_key[] = {'2', 'J', 'K', 'L', ':', 0x00};
+// j + [ k, l, ;]
+const char sebeol_3shin_symbol_key[] = {'j', 'k', 'l', ';', 0x00};
+
+// ㅗ, ㅜ
+const ucschar sebeol_3_symbol_value[] = {0x1169, 0x116e, 0x0000};  
+// 첫소리 ㅇ [J]
+const ucschar sebeol_3moa_symbol_value[] = {0x110b, 0x0000};
+// 첫소리 ㅇ [j]
+const ucschar sebeol_3shin_symbol_value[] = {0x110b, 0x0000};
+
+// 세벌식 옛한글
+  //6 : 옛글 배열,  ㅖ, ㅢ  // 공병우 계열
+const char sebeol_3yet_yetgeul_key[] = {'6', '7', '8', 0x00};
+// ㅖ, ㅢ  // 공병우 계열
+const ucschar sebeol_3yet_yetgeul_value[] = {0x1168, 0x1174, 0x0000};
+
+// 세벌식 확장단계 표시
+// ®, ①, ②, ③, ④, ⑤
+const ucschar sebeol_3_ext_step[] = {0x00AE, 0x2460, 0x2461, 0x2462, 0x2463, 0x2464, 0x0000};
+// 세벌식 겹홀소리 글쇠
+  // ㅡ,ㅗ, ㅜ  // 공병우 계열
+const char sebeol_3_moeum_key[] = {'8', '/', '9', 0x00};
+  // ㅡ, ㅗ, ㅜ  // 신광조 계열
+const char sebeol_3shin_moeum_key[] = {'I', 'O', 'P', 0x00};
+ // ㅗ, ㅜ  // 신세기 계열 2017~
+const char sebeol_3moa_semoe_moeum_key[] = {'.', 'p', 0x00};
+ // ㅗ, ㅜ  // 신세기 계열 2016
+const char sebeol_3moa_semoe_2016_moeum_key[] = {'[', 'p', 0x00};
+ // ㅗ, ㅜ  // 신세기 계열 2014, 2015
+const char sebeol_3moa_semoe_moeum_key_deprecated[] = {'\'', 'p', 0x00};
+ // ㅗ, ㅜ  // 신세기 계열
+//char sebeol_3moa_semoe_2015_moeum_key[] = {';', 'p', 0x00};
+  // ㅗ, ㅜ, ㅡ
+const ucschar sebeol_3_moeum_value[] = {0x1169, 0x116e, 0x1173, 0x0000};
+
+
+
 typedef struct _HangulCombinationItem HangulCombinationItem;
 
 struct _HangulCombinationItem {
@@ -80,11 +131,24 @@ struct _HangulCombination {
 struct _HangulKeyboard {
     char* id;
     char* name;
+    // [기본배열]
     ucschar* table[4];
+    // [기본조합,추가조합,갈마들이조합]
     HangulCombination* combination[4];
 
     int type;
     bool is_static;
+    
+    // 3beol
+    ucschar replace_it; // 바꿔 놓기 : 세벌식의 ] -> 아래아
+    // 확장배열씀, 갈마들이켜끄기됨, 입력순서〈안〉따짐, 왼/오른ㅗㅜ구분함, 확장겹받침허용〈안〉함
+    bool flag[5]; //
+    // [모음글쇠, 확장기호글쇠, 확장한글글쇠, ]
+    char* addon_key[4];
+    // [모음값, 확장기호값, 확장한글값, 확장단계기호값]
+    ucschar* addon_value[4];
+    // [기호확장함수, 한글확장함수]
+    ucschar (*addon_func[2])(int, int, int);
 };
 
 typedef struct _HangulKeyboardList {
@@ -95,11 +159,19 @@ typedef struct _HangulKeyboardList {
 
 #include "hangulkeyboard.h"
 
-static const HangulCombination hangul_combination_default = {
-    countof(hangul_combination_table_default),
-    countof(hangul_combination_table_default),
-    (HangulCombinationItem*)hangul_combination_table_default,
+
+static const HangulCombination hangul_combination_default_2 = {
+    countof(hangul_combination_table_default_2),
+    countof(hangul_combination_table_default_2),
+    (HangulCombinationItem*)hangul_combination_table_default_2,
     true
+};
+
+
+static const HangulCombination hangul_combination_default_3 = {
+    countof(hangul_combination_table_default_3),
+    countof(hangul_combination_table_default_3),
+    (HangulCombinationItem*)hangul_combination_table_default_3
 };
 
 static const HangulCombination hangul_combination_romaja = {
@@ -123,86 +195,163 @@ static const HangulCombination hangul_combination_ahn = {
     true
 };
 
+static const HangulCombination hangul_galmadeuli_3shin_p2 = {
+    countof(hangul_galmadeuli_table_3shin_p2),
+    countof(hangul_galmadeuli_table_3shin_p2),
+    (HangulCombinationItem*)hangul_galmadeuli_table_3shin_p2,
+    true
+};
+
+
 static const HangulKeyboard hangul_keyboard_2 = {
     (char*)"2",
-    (char*)N_("Dubeolsik"),
+    (char*)N_("Dubeolsik KSX 5002 Builtin"),
     { (ucschar*)hangul_keyboard_table_2, NULL, NULL, NULL },
-    { (HangulCombination*)&hangul_combination_default, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_2, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JAMO,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_2y = {
     (char*)"2y",
-    (char*)N_("Dubeolsik Yetgeul"),
+    (char*)N_("Dubeolsik Yetgeul Builtin"),
     { (ucschar*)hangul_keyboard_table_2y, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_full, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JAMO_YET,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_32 = {
     (char*)"32",
-    (char*)N_("Sebeolsik Dubeol Layout"),
+    (char*)N_("Sebeolsik Dubeol Layout Builtin"),
     { (ucschar*)hangul_keyboard_table_32, NULL, NULL, NULL },
-    { (HangulCombination*)&hangul_combination_default, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_2, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_390 = {
-    (char*)"39",
-    (char*)N_("Sebeolsik 390"),
+    (char*)"3-90",
+    (char*)N_("Sebeolsik 390 Builtin"),
     { (ucschar*)hangul_keyboard_table_390, NULL, NULL, NULL },
-    { (HangulCombination*)&hangul_combination_default, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_3final = {
-    (char*)"3f",
-    (char*)N_("Sebeolsik Final"),
+    (char*)"3-91-final",
+    (char*)N_("Sebeolsik Final Builtin"),
     { (ucschar*)hangul_keyboard_table_3final, NULL, NULL, NULL },
-    { (HangulCombination*)&hangul_combination_default, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_3sun = {
     (char*)"3s",
-    (char*)N_("Sebeolsik Noshift"),
+    (char*)N_("Sebeolsik Noshift Builtin"),
     { (ucschar*)hangul_keyboard_table_3sun, NULL, NULL, NULL },
-    { (HangulCombination*)&hangul_combination_default, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_3yet = {
     (char*)"3y",
-    (char*)N_("Sebeolsik Yetgeul"),
+    (char*)N_("Sebeolsik Yetgeul Builtin"),
     { (ucschar*)hangul_keyboard_table_3yet, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_full, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO_YET,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_romaja = {
     (char*)"ro",
-    (char*)N_("Romaja"),
+    (char*)N_("Romaja Builtin"),
     { (ucschar*)hangul_keyboard_table_romaja, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_romaja, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_ROMAJA,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
 
 static const HangulKeyboard hangul_keyboard_ahn = {
     (char*)"ahn",
-    (char*)N_("Ahnmatae"),
+    (char*)N_("Ahnmatae Builtin"),
     { (ucschar*)hangul_keyboard_table_ahn, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_ahn, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
-    true
+    true,
+    0x0000, 
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL}, 
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
 };
+
+static const HangulKeyboard hangul_keyboard_3shin_p2 = {
+    (char*)"3shin-p2",
+    (char*)N_("Sebeolsik Shin P2"),
+    { (ucschar*)hangul_keyboard_table_3shin_p2, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_3, //기본조합
+      NULL,//추가조합
+      (HangulCombination*)&hangul_galmadeuli_3shin_p2, //갈마들이조합
+      NULL 
+    },
+    HANGUL_KEYBOARD_TYPE_JASO_SHIN,
+    true ,
+  0x0000, // replace_it // FALSE
+  // 확장배열씀, 갈마들이켜끄기됨, 입력순서〈안〉따짐, 왼/오른ㅗㅜ구분함, 확장겹받침허용〈안〉함
+  // flag // 갈마들이는 필수 기능이라 꺼지면 안된다
+  {true, false, false, true, true},
+  //moeum_key, symbol_key, yetgeul_key
+  { NULL, (char*)&sebeol_3shin_symbol_key, NULL, NULL },
+  //moeum_value, symbol_value, yetgeul_value, ext_step_value
+  { (ucschar*)&sebeol_3_moeum_value, (ucschar*)&sebeol_3shin_symbol_value, NULL, (ucschar*)&sebeol_3_ext_step },
+  //(*symbolFunc)(int, int, int), (*yetgeulFunc)(int, int, int)
+  { (ucschar(*)(int, int, int))&hangul_ascii_to_symbol_shin, NULL }
+};
+
 
 static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_2,
@@ -214,6 +363,8 @@ static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_32,
     &hangul_keyboard_romaja,
     &hangul_keyboard_ahn,
+    // 3beol
+    &hangul_keyboard_3shin_p2
 };
 static unsigned int hangul_builtin_keyboard_count = countof(hangul_builtin_keyboards);
 
@@ -396,6 +547,18 @@ hangul_keyboard_new()
 
     keyboard->type = HANGUL_KEYBOARD_TYPE_JAMO;
     keyboard->is_static = false;
+
+    // 3beol
+    // 바꿔 놓기 : 세벌식의 ] -> 아래아
+    keyboard->replace_it = 0x0000; 
+    // 확장배열씀, 갈마들이켜끄기됨, 입력순서〈안〉따짐, 왼/오른ㅗㅜ구분함, 확장겹받침허용〈안〉함
+    bool flag[5] = {false, false, false, false, false}; //
+    // [모음글쇠, 확장기호글쇠, 확장한글글쇠, ]
+    char* addon_key[4] = {NULL, NULL, NULL, NULL};
+    // [모음값, 확장기호값, 확장한글값, 확장단계기호값]
+    ucschar* addon_value[4] = {NULL, NULL, NULL, NULL};
+    // [기호확장함수, 한글확장함수]
+    ucschar (*addon_func[2])(int, int, int) = {NULL, NULL};
 
     return keyboard;
 }
@@ -594,6 +757,8 @@ on_element_start(void* data, const XML_Char* element, const XML_Char** attr)
 	    type = HANGUL_KEYBOARD_TYPE_JASO_YET;
 	} else if (strcmp(typestr, "romaja") == 0) {
 	    type = HANGUL_KEYBOARD_TYPE_ROMAJA;
+	} else if (strcmp(typestr, "shin") == 0) {
+	    type = HANGUL_KEYBOARD_TYPE_JASO_SHIN;
 	}
 
 	hangul_keyboard_set_type(context->keyboard, type);
@@ -850,7 +1015,7 @@ hangul_keyboard_list_fini()
 }
 
 static char*
-hangul_builtin_keyboard_list_get_keyboard_id(unsigned index_)
+hangul_builtin_keyboard_list_get_keyboard_id(unsigned int index_)
 {
     if (index_ >= hangul_builtin_keyboard_count)
 	return NULL;
@@ -863,7 +1028,7 @@ hangul_builtin_keyboard_list_get_keyboard_id(unsigned index_)
 }
 
 static const char*
-hangul_builtin_keyboard_list_get_keyboard_name(unsigned index_)
+hangul_builtin_keyboard_list_get_keyboard_name(unsigned int index_)
 {
 #ifdef ENABLE_NLS
     static bool isGettextInitialized = false;
@@ -924,10 +1089,14 @@ hangul_keyboard_list_get_count()
  *         free해서는 안된다.
  */
 const char*
-hangul_keyboard_list_get_keyboard_id(unsigned index_)
+hangul_keyboard_list_get_keyboard_id(unsigned int index_)
 {
     if (hangul_builtin_keyboard_count > 0) {
-	return hangul_builtin_keyboard_list_get_keyboard_id(index_);
+      char* id = hangul_builtin_keyboard_list_get_keyboard_id(index_);
+      if (id != NULL) {
+        return id;
+      }
+      //return hangul_builtin_keyboard_list_get_keyboard_id(index_);
     }
 
     if (index_ >= hangul_keyboards.n)
@@ -950,10 +1119,14 @@ hangul_keyboard_list_get_keyboard_id(unsigned index_)
  *         free해서는 안된다.
  */
 const char*
-hangul_keyboard_list_get_keyboard_name(unsigned index_)
+hangul_keyboard_list_get_keyboard_name(unsigned int index_)
 {
     if (hangul_builtin_keyboard_count > 0) {
-	return hangul_builtin_keyboard_list_get_keyboard_name(index_);
+      const char* name = hangul_builtin_keyboard_list_get_keyboard_name(index_);
+      if (name != NULL) {
+        return name;
+      }
+	 //return hangul_builtin_keyboard_list_get_keyboard_name(index_);
     }
 
     if (index_ >= hangul_keyboards.n)
@@ -970,7 +1143,11 @@ const HangulKeyboard*
 hangul_keyboard_list_get_keyboard(const char* id)
 {
     if (hangul_builtin_keyboard_count > 0) {
-	return hangul_builtin_keyboard_list_get_keyboard(id);
+      const HangulKeyboard* keyboard = hangul_builtin_keyboard_list_get_keyboard(id);
+      if (keyboard != NULL) {
+        return keyboard;
+      }
+    //return hangul_builtin_keyboard_list_get_keyboard(id);
     }
 
     /* 키보드 목록에서 순차 검색을 하여 찾으므로 같은 id로 서로다른
@@ -1008,3 +1185,126 @@ hangul_keyboard_list_append(HangulKeyboard* keyboard)
 
     return true;
 }
+
+
+
+
+// 3beol
+#ifndef libhangul_hangulkeyboard_addon_h
+#define libhangul_hangulkeyboard_addon_h
+ucschar
+hangul_keyboard_get_replace_it(const HangulKeyboard* keyboard)
+{
+    return keyboard->replace_it;
+}
+
+
+char*
+hangul_keyboard_get_addon_key(const HangulKeyboard* keyboard, int index) 
+{
+    return keyboard->addon_key[index];
+}
+
+ucschar*
+hangul_keyboard_get_addon_value(const HangulKeyboard* keyboard, int index)
+{
+    return keyboard->addon_value[index];
+}
+
+//ucschar (*addon_func[2])(int, int, int);
+ucschar
+(*hangul_keyboard_get_addon_func(const HangulKeyboard* keyboard, int index))(int, int, int)
+{
+    return keyboard->addon_func[index];
+}
+
+
+bool
+hangul_keyboard_is_right_oua(const HangulKeyboard *keyboard, int ascii, ucschar ch, int index)
+{
+  if (keyboard == NULL) {
+    return false;
+  }
+  if (keyboard->addon_key[index] == NULL) {
+    return false;
+  }
+
+  int i;
+  for (i = 0; *(keyboard->addon_key[index] + i) != 0x00; i++) {
+    if (ascii == *(keyboard->addon_key[index] + i)) {
+      for (i = 0; *(keyboard->addon_value[index] + i) != 0x0000; i++) {
+        if (ch == *(keyboard->addon_value[index] + i)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+
+int
+hangul_keyboard_is_extension_key(const HangulKeyboard *keyboard, int ascii, int index)
+{
+  if (keyboard == NULL) 
+  {
+    return 0;
+  }
+  if (keyboard->addon_key[index] == NULL) 
+  {
+    return 0;
+  }
+
+
+  int i;
+  for (i = 1; *(keyboard->addon_key[index] + i) != 0x00; i++) 
+  {
+    if (ascii == *(keyboard->addon_key[index] + i)) 
+    {
+      if (*(keyboard->addon_key[index] + 0) == '1') 
+      {
+        i += 10;
+      }
+      else if (*(keyboard->addon_key[index] + 0) == '2') 
+      {
+        i += 20;
+      }
+      else if (*(keyboard->addon_key[index] + 0) == '6') 
+      {
+        // 옛글 배열.
+        return i;
+      }
+      else  
+      {
+      }
+      return i;
+    }
+  }
+
+  return 0;
+}
+
+
+bool
+hangul_keyboard_get_flag(const HangulKeyboard *keyboard, unsigned int option)
+{
+    if (keyboard == NULL) 
+    {
+        return false;
+    }
+
+    switch(option)
+    {
+    case HANGUL_KEYBOARD_FLAG_EXTENDED:
+    case HANGUL_KEYBOARD_FLAG_GALMADEULI:
+    case HANGUL_KEYBOARD_FLAG_LOOSE_ORDER:
+    case HANGUL_KEYBOARD_FLAG_RIGHT_OU:
+    case HANGUL_KEYBOARD_FLAG_NO_ADDED_GGEUT:
+        return keyboard->flag[option];
+    }
+
+    return false;
+}
+
+
+#endif /* libhangul_hangulkeyboard_addon_h */
