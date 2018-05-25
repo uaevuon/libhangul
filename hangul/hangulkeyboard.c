@@ -202,6 +202,14 @@ static const HangulCombination hangul_replace_2_noshift = {
     true
 };
 
+
+static const HangulCombination hangul_combination_3_91_noshift = {
+    countof(hangul_combination_table_3_91_noshift),
+    countof(hangul_combination_table_3_91_noshift),
+    (HangulCombinationItem*)hangul_combination_table_3_91_noshift,
+    true
+};
+
 static const HangulCombination hangul_galmadeuli_3shin_p2 = {
     countof(hangul_galmadeuli_table_3shin_p2),
     countof(hangul_galmadeuli_table_3shin_p2),
@@ -252,9 +260,9 @@ static const HangulKeyboard hangul_keyboard_32 = {
     {NULL, NULL}
 };
 
-static const HangulKeyboard hangul_keyboard_390 = {
+static const HangulKeyboard hangul_keyboard_3_90 = {
     (char*)"3-90",
-    (char*)N_("Sebeolsik 390 Builtin"),
+    (char*)N_("Sebeolsik 3-90 Builtin"),
     { (ucschar*)hangul_keyboard_table_390, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
@@ -266,9 +274,9 @@ static const HangulKeyboard hangul_keyboard_390 = {
     {NULL, NULL}
 };
 
-static const HangulKeyboard hangul_keyboard_3final = {
-    (char*)"3-91-final",
-    (char*)N_("Sebeolsik Final Builtin"),
+static const HangulKeyboard hangul_keyboard_3_91_final = {
+    (char*)"3-91",
+    (char*)N_("Sebeolsik 3-91 Final Builtin"),
     { (ucschar*)hangul_keyboard_table_3final, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_default_3, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
@@ -374,6 +382,41 @@ static const HangulKeyboard hangul_keyboard_2north9256 = {
     {NULL, NULL}
 };
 
+static const HangulKeyboard hangul_keyboard_3_89 = {
+    (char*)"3-89",
+    (char*)N_("Sebeolsik 3-89"),
+    { (ucschar*)hangul_keyboard_table_3_89, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_default_3,//기본조합
+      NULL,//추가조합
+      NULL,//갈마들이조합
+      NULL
+    },
+    HANGUL_KEYBOARD_TYPE_JASO,
+    true,
+    0x0000,
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
+};
+
+static const HangulKeyboard hangul_keyboard_3_91_final_noshift = {
+    (char*)"3-91-noshift",
+    (char*)N_("Sebeolsik 3-91 Final Noshift"),
+    { (ucschar*)hangul_keyboard_table_3_91_final_noshift, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_3_91_noshift,//기본조합
+      NULL,//추가조합
+      NULL,//갈마들이조합
+      NULL
+    },
+    HANGUL_KEYBOARD_TYPE_3FINALSUN,
+    true,
+    0x0000,
+    {false, false, false, false, false},
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL, NULL, NULL},
+    {NULL, NULL}
+};
 
 static const HangulKeyboard hangul_keyboard_3shin_p2 = {
     (char*)"3shin-p2",
@@ -403,8 +446,8 @@ static const HangulKeyboard hangul_keyboard_3shin_p2 = {
 static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_2,
     &hangul_keyboard_2y,
-    &hangul_keyboard_390,
-    &hangul_keyboard_3final,
+    &hangul_keyboard_3_90,
+    &hangul_keyboard_3_91_final,
     &hangul_keyboard_3sun,
     &hangul_keyboard_3yet,
     &hangul_keyboard_32,
@@ -412,6 +455,8 @@ static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_ahn,
     // 3beol
     &hangul_keyboard_2noshift,
+    &hangul_keyboard_3_89,
+    &hangul_keyboard_3_91_final_noshift,
     &hangul_keyboard_3shin_p2
 };
 static unsigned int hangul_builtin_keyboard_count = countof(hangul_builtin_keyboards);
