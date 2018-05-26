@@ -31,7 +31,7 @@ void    hangul_jongseong_decompose(ucschar ch, ucschar* jong, ucschar* cho);
 
 int     hangul_keyboard_get_type(const HangulKeyboard *keyboard);
 ucschar hangul_keyboard_combine(const HangulKeyboard* keyboard,
-	    unsigned id, ucschar first, ucschar second);
+	    unsigned int id, ucschar first, ucschar second);
 ucschar hangul_keyboard_get_mapping(const HangulKeyboard* keyboard,
 	    int tableid, unsigned key);
 
@@ -64,16 +64,18 @@ static bool
 hangul_ic_process_jamo_dubeol(HangulInputContext *hic, ucschar ch);
 static bool
 hangul_ic_process_3finalsun (HangulInputContext *hic, int ascii, ucschar ch);
+static bool
+hangul_ic_process_jaso_sebeol (HangulInputContext *hic, int ascii, ucschar ch);
 
 // 3beol keyboard
 ucschar
 hangul_keyboard_get_replace_it(const HangulKeyboard* keyboard);
 char*
-hangul_keyboard_get_addon_key(const HangulKeyboard* keyboard, int index);
+hangul_keyboard_get_addon_key(const HangulKeyboard* keyboard, unsigned int index);
 ucschar*
-hangul_keyboard_get_addon_value(const HangulKeyboard* keyboard, int index);
+hangul_keyboard_get_addon_value(const HangulKeyboard* keyboard, unsigned int index);
 ucschar
-(*hangul_keyboard_get_addon_func(const HangulKeyboard* keyboard, int index))(int, int, int);
+(*hangul_keyboard_get_addon_func(const HangulKeyboard* keyboard, unsigned int index))(int, int, int);
 
 bool
 hangul_keyboard_get_flag(const HangulKeyboard *keyboard, unsigned int option);

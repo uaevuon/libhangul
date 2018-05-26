@@ -122,10 +122,12 @@ enum {// [모음값, 확장기호값, 확장한글값, 확장단계기호값]
   HANGUL_KEYBOARD_VALUE_YETGEUL,
   HANGUL_KEYBOARD_VALUE_EXTENDED_STEP,
 };
+
 enum {// [기호확장함수, 한글확장함수]
   HANGUL_FUNCTION_SYMBOL,
   HANGUL_FUNCTION_YETHANGEUL,
 };
+
 enum {// Combination // [기본조합,추가조합,갈마들이조합]
   HANGUL_COMBINATION_DEFAULT,
   HANGUL_COMBINATION_ADDON,
