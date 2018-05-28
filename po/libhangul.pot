@@ -1,0 +1,249 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: https://github.com/choehwanjin/libhangul\n"
+"POT-Creation-Date: 2018-05-26 23:35+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../hangul/hangulkeyboard.c:390
+msgid "Dubeolsik KSX 5002 Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:404
+msgid "Dubeolsik Yetgeul Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:418
+msgid "Sebeolsik Dubeol Layout Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:432
+msgid "Sebeolsik 3-90 Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:446
+msgid "Sebeolsik 3-91 Final Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:460
+msgid "Sebeolsik Noshift 1990"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:474
+msgid "Sebeolsik 3-93 Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:488
+msgid "Romaja Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:502
+msgid "Ahnmatae Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:517
+msgid "Dubeolsik Noshift Builtin"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:536
+msgid "Dubeolsik North 9256"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:554
+msgid "Sebeolsik 3-89"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:572
+msgid "Sebeolsik 3-91 Final Noshift"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:591
+msgid "Sebeolsik 3-95"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:605
+msgid "Sebeolsik 3Ahnmatae"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:619
+msgid "Sebeolsik 3-2011"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:634
+msgid "Sebeolsik 3-2011 Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:651
+msgid "Sebeolsik 3-2012"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:666
+msgid "Sebeolsik 3-2012 Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:683
+msgid "Sebeolsik 3-2014"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:698
+msgid "Sebeolsik 3-2014 Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:715
+msgid "Sebeolsik 3-2015"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:732
+msgid "Sebeolsik 3-2015 Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:748
+msgid "Sebeolsik 3-2015M"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:765
+msgid "Sebeolsik 3-2015P"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:783
+msgid "Sebeolsik 3-2015P Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:800
+msgid "Sebeolsik 3-P2"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:815
+msgid "Sebeolsik 3-P3"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:830
+msgid "Sebeolsik 3-14 Proposal"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:847
+msgid "Sebeolsik Semoe 2014"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:861
+msgid "Sebeolsik Semoe 2015"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:875
+msgid "Sebeolsik Semoe 2016"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:890
+msgid "Sebeolsik Semoe 2017"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:905
+msgid "Sebeolsik Noshift 2014"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:921
+msgid "Sebeolsik 3Gimguk-38A Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:937
+msgid "Sebeolsik Shin 1995"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:955
+msgid "Sebeolsik Shin 2003"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:973
+msgid "Sebeolsik Shin 2012"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:991
+msgid "Sebeolsik Shin 2015"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:1008
+msgid "Sebeolsik Shin M"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:1025
+msgid "Sebeolsik Shin P"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:1043
+msgid "Sebeolsik Shin P Yetgeul"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:1061
+msgid "Sebeolsik Shin P2"
+msgstr ""
+
+#: ../hangul/hangulkeyboard.c:1085
+msgid "Sebeolsik Shin P2 Yetgeul"
+msgstr ""
+
+#: ../tools/hangul.c:72
+#, c-format
+msgid "Usage: %s [OPTION]... [FILE]...\n"
+msgstr ""
+
+#: ../tools/hangul.c:76
+msgid ""
+"Convert string into korean characters according to korean keyboard layout.\n"
+"\n"
+"Mandatory arguments to long options are mandatory for short options too.\n"
+"  -k, --keyboard=KEYBOARDID   select keyboard layout by KEYBOARDID\n"
+"  -l, --list                  list available keyboard and exit\n"
+"  -i, --input=STRING          use STRING as input instead of standard input\n"
+"  -o, --output=FILE           write result to FILE instead of standard "
+"output\n"
+"  -s, --strict-order          do not allow wrong input sequence\n"
+msgstr ""
+
+#: ../tools/hangul.c:87
+msgid ""
+"      --help                  display this help and exit\n"
+"      --version               output version information and exit\n"
+msgstr ""
+
+#: ../tools/hangul.c:92
+msgid ""
+"\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+msgstr ""
+
+#: ../tools/hangul.c:97
+#, c-format
+msgid ""
+"\n"
+"Examples:\n"
+"  %s -i gksrmfdlqfur  Convert specified string into korean characters\n"
+"                          and print them to standard output.\n"
+"  %s                  Convert standard input into korean characters\n"
+"                          and print them to standard output.\n"
+msgstr ""
+
+#: ../tools/hangul.c:107
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr ""
+
+#: ../tools/hangul.c:237 ../tools/hangul.c:276
+msgid "standard output"
+msgstr ""
+
+#: ../tools/hangul.c:360
+#, c-format
+msgid "conversion from %s to UTF-8"
+msgstr ""
