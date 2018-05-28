@@ -94,6 +94,8 @@ enum {
     // 3beol
     HANGUL_KEYBOARD_TYPE_3FINALSUN,
 	HANGUL_KEYBOARD_TYPE_JASO_SHIN,
+    HANGUL_KEYBOARD_TYPE_JASO_SHIN_SHIFT,
+    HANGUL_KEYBOARD_TYPE_JASO_SHIN_YET,
     HANGUL_KEYBOARD_TYPE_ROMAJA,
     HANGUL_KEYBOARD_TYPE_JAMO_YET,
     HANGUL_KEYBOARD_TYPE_JASO_YET,
@@ -157,6 +159,8 @@ unsigned int hangul_keyboard_list_get_count();
 const char* hangul_keyboard_list_get_keyboard_id(unsigned int index_);
 const char* hangul_keyboard_list_get_keyboard_name(unsigned int index_);
 
+
+
 /* combination */
 HangulCombination* hangul_combination_new(void);
 void hangul_combination_delete(HangulCombination *combination);
@@ -167,6 +171,14 @@ bool hangul_combination_set_data(HangulCombination* combination,
 HangulInputContext* hangul_ic_new(const char* keyboard);
 void hangul_ic_delete(HangulInputContext *hic);
 bool hangul_ic_process(HangulInputContext *hic, int ascii);
+// 3beol
+bool
+hangul_ic_process_with_capslock(HangulInputContext *hic, int ascii, bool capslock);
+unsigned int
+hangul_ic_get_keyboard_flag(HangulInputContext *hic);
+void
+hangul_ic_set_keyboard_flag(HangulInputContext *hic, bool* value);
+
 void hangul_ic_reset(HangulInputContext *hic);
 bool hangul_ic_backspace(HangulInputContext *hic);
 

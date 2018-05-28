@@ -66,6 +66,10 @@ static bool
 hangul_ic_process_3finalsun (HangulInputContext *hic, int ascii, ucschar ch);
 static bool
 hangul_ic_process_jaso_sebeol (HangulInputContext *hic, int ascii, ucschar ch);
+static bool
+hangul_ic_process_jaso_shin_sebeol_yet (HangulInputContext *hic, int ascii, ucschar ch, bool capslock);
+static bool
+hangul_ic_process_jaso_shin_sebeol_shift (HangulInputContext *hic, int ascii, ucschar ch);
 
 // 3beol keyboard
 ucschar
