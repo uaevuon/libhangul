@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://github.com/choehwanjin/libhangul\n"
-"POT-Creation-Date: 2018-05-26 23:35+0900\n"
+"POT-Creation-Date: 2018-06-04 21:23+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../hangul/hangulkeyboard.c:390
-msgid "Dubeolsik KSX 5002 Builtin"
+msgid "Dubeolsik KSX 5002"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:404
-msgid "Dubeolsik Yetgeul Builtin"
+msgid "Dubeolsik Yetgeul"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:418
-msgid "Sebeolsik Dubeol Layout Builtin"
+msgid "Sebeolsik Dubeol Layout"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:432
-msgid "Sebeolsik 3-90 Builtin"
+msgid "Sebeolsik 3-90"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:446
-msgid "Sebeolsik 3-91 Final Builtin"
+msgid "Sebeolsik 3-91 Final"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:460
@@ -46,15 +46,15 @@ msgid "Sebeolsik 3-93 Yetgeul"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:488
-msgid "Romaja Builtin"
+msgid "Romaja"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:502
-msgid "Ahnmatae Builtin"
+msgid "Ahnmatae"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:517
-msgid "Dubeolsik Noshift Builtin"
+msgid "Dubeolsik Noshift"
 msgstr ""
 
 #: ../hangul/hangulkeyboard.c:536

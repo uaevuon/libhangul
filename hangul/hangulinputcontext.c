@@ -1643,7 +1643,7 @@ hangul_ic_new(const char* keyboard)
     hic->use_jamo_mode_only = FALSE;
 
     hic->option_auto_reorder = false;
-    hic->option_combi_on_double_stroke = false;
+    hic->option_combi_on_double_stroke = true;
     hic->option_non_choseong_combi = true;
 
     hic->option_extended_layout_enable = false;
