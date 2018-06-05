@@ -7,12 +7,15 @@
 	dh $@ --with autoreconf
 	
 override_dh_auto_configure:
-	test -f ChangeLog || touch ChangeLog
-	test -f config.rpath || touch config.rpath
-	intltoolize --copy --force
 	dh_auto_configure -- \
 		--enable-external-keyboards
 
+override_dh_autoreconfe:
+	test -f ChangeLog || touch ChangeLog
+	test -f config.rpath || touch config.rpath
+	intltoolize --copy --force
+	dh_autoreconfe
+	
 # The upstream distributes the git-based changelog, so we can't get that
 # changelog when we directly use the upstream git..
 .PHONY: override_dh_installchangelogs
