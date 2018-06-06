@@ -217,6 +217,13 @@ START_TEST(test_hangul_ic_process_3f)
 }
 END_TEST
 
+START_TEST(test_hangul_ic_process_3s)
+{
+    /* ㅎㅐㅅㅅ */
+    fail_unless(check_preedit("3s", "mrqq", L"했"));
+}
+END_TEST
+
 START_TEST(test_hangul_ic_process_romaja)
 {
     HangulInputContext* ic;
@@ -543,6 +550,12 @@ START_TEST(test_hangul_keyboard)
 	fail_unless(name != NULL,
 		    "error: keyboard id == NULL");
     }
+
+    HangulKeyboard* keyboard;
+    fail_unless(
+        (keyboard = hangul_keyboard_new_from_file(TEST_SOURCE_DIR "/recursive.xml")) != NULL
+    );
+    hangul_keyboard_delete(keyboard);
 }
 END_TEST
 
@@ -568,6 +581,7 @@ Suite* libhangul_suite()
     tcase_add_test(hangul, test_hangul_ic_process_2);
     tcase_add_test(hangul, test_hangul_ic_process_2y);
     tcase_add_test(hangul, test_hangul_ic_process_3f);
+    tcase_add_test(hangul, test_hangul_ic_process_3s);
     tcase_add_test(hangul, test_hangul_ic_process_romaja);
     tcase_add_test(hangul, test_hangul_ic_auto_reorder);
     tcase_add_test(hangul, test_hangul_ic_combi_on_double_stroke);

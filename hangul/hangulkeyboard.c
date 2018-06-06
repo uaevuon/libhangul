@@ -1151,14 +1151,15 @@ static unsigned int hangul_builtin_keyboard_count = countof(hangul_builtin_keybo
 static HangulKeyboardList hangul_keyboards = { 0, 0, NULL };
 
 typedef struct _HangulKeyboardLoadContext {
-    const char* path;
+    const char* path_stack[64];
+    int path_stack_top;
     HangulKeyboard* keyboard;
     int current_id;
     const char* current_element;
     bool save_name;
 } HangulKeyboardLoadContext;
 
-static void    hangul_keyboard_parse_file(const char* path, void* user_data);
+static void    hangul_keyboard_parse_file(const char* path, HangulKeyboardLoadContext* context);
 static bool    hangul_keyboard_list_append(HangulKeyboard* keyboard);
 
 HangulCombination*
@@ -1205,7 +1206,7 @@ hangul_combination_set_data(HangulCombination* combination,
     if (combination == NULL)
 	return false;
 
-    if (n == 0 || n > ULONG_MAX / sizeof(HangulCombinationItem))
+    if (n == 0 || n > SIZE_MAX / sizeof(HangulCombinationItem))
 	return false;
 
     combination->table = malloc(sizeof(HangulCombinationItem) * n);
@@ -1602,7 +1603,11 @@ on_element_start(void* data, const XML_Char* element, const XML_Char** attr)
 	if (file == NULL)
 	    return;
 
-	size_t n = strlen(file) + strlen(context->path) + 1;
+        int top = context->path_stack_top;
+        if (top < 0)
+            return;
+
+        size_t n = strlen(file) + strlen(context->path_stack[top]) + 1;
 	char* path = malloc(n);
 	if (path == NULL)
 	    return;
@@ -1610,7 +1615,7 @@ on_element_start(void* data, const XML_Char* element, const XML_Char** attr)
 	if (file[0] == '/') {
 	    strncpy(path, file, n);
 	} else {
-	    char* orig_path = strdup(context->path);
+	    char* orig_path = strdup(context->path_stack[top]);
 	    char* dir = dirname(orig_path);
 	    snprintf(path, n, "%s/%s", dir, file);
 	    free(orig_path);
@@ -1652,7 +1657,7 @@ on_char_data(void* data, const XML_Char* s, int len)
     if (context->keyboard == NULL)
 	return;
 
-    if (strcmp(context->current_element, "name") == 0) {
+    if (context->current_element != NULL && strcmp(context->current_element, "name") == 0) {
 	if (context->save_name) {
 	    char buf[1024];
 	    if (len >= sizeof(buf))
@@ -1665,11 +1670,19 @@ on_char_data(void* data, const XML_Char* s, int len)
 }
 
 static void
-hangul_keyboard_parse_file(const char* path, void* user_data)
+hangul_keyboard_parse_file(const char* path, HangulKeyboardLoadContext* context)
 {
+    int top = context->path_stack_top + 1;
+    if (top >= sizeof(context->path_stack) / sizeof(context->path_stack[0])) {
+        return;
+    }
+
+    context->path_stack[top] = path;
+    context->path_stack_top = top;
+
     XML_Parser parser = XML_ParserCreate(NULL);
 
-    XML_SetUserData(parser, user_data);
+    XML_SetUserData(parser, context);
     XML_SetElementHandler(parser, on_element_start, on_element_end);
     XML_SetCharacterDataHandler(parser, on_char_data);
 
@@ -1695,12 +1708,16 @@ close:
     fclose(file);
 done:
     XML_ParserFree(parser);
+
+    context->path_stack_top--;
 }
 
-static HangulKeyboard*
+HangulKeyboard*
 hangul_keyboard_new_from_file(const char* path)
 {
-    HangulKeyboardLoadContext context = { path, NULL, 0, "" };
+    HangulKeyboardLoadContext context;
+    memset(&context, 0, sizeof(context));
+    context.path_stack_top = -1;
 
     hangul_keyboard_parse_file(path, &context);
 
@@ -1710,13 +1727,25 @@ hangul_keyboard_new_from_file(const char* path)
 static unsigned
 hangul_keyboard_list_load_dir(const char* path)
 {
-    char pattern[PATH_MAX];
-    snprintf(pattern, sizeof(pattern), "%s/*.xml", path);
+    if (path == NULL) {
+        return 0;
+    }
+
+    const char* subpattern = "/*.xml";
+    size_t len = strlen(path) + strlen(subpattern) + 1;
+    char* pattern = (char*)malloc(len);
+    if (pattern == NULL) {
+        return 0;
+    }
+
+    snprintf(pattern, len, "%s%s", path, subpattern);
 
     glob_t result;
     int res = glob(pattern, GLOB_ERR, NULL, &result);
-    if (res != 0)
+    if (res != 0) {
+        free(pattern);
 	return 0;
+    }
 
     size_t i;
     for (i = 0; i < result.gl_pathc; ++i) {
@@ -1727,6 +1756,7 @@ hangul_keyboard_list_load_dir(const char* path)
     }
 
     globfree(&result);
+    free(pattern);
 
     return hangul_keyboards.n;
 }
@@ -1767,17 +1797,30 @@ hangul_keyboard_list_init()
     n += hangul_keyboard_list_load_dir(LIBHANGUL_KEYBOARD_DIR);
 
     /* 유저의 개별 키보드 파일 로딩 */
-    char user_data_dir[PATH_MAX];
+    char* user_data_dir = NULL;
     char* xdg_data_home = getenv("XDG_DATA_HOME");
     if (xdg_data_home == NULL) {
-	char* home_dir = getenv("HOME");
-	snprintf(user_data_dir, sizeof(user_data_dir),
-		"%s/.local/share/libhangul/keyboards", home_dir);
+        char* home_dir = getenv("HOME");
+        if (home_dir != NULL) {
+            const char* subdir = "/.local/share/libhangul/keyboards";
+            size_t len = strlen(home_dir) + strlen(subdir) + 1;
+            user_data_dir = (char*)malloc(len);
+            if (user_data_dir != NULL) {
+                snprintf(user_data_dir, len, "%s%s", home_dir, subdir);
+            }
+        }
     } else {
-	snprintf(user_data_dir, sizeof(user_data_dir),
-		"%s/libhangul/keyboards", xdg_data_home);
+        const char* subdir = "/libhangul/keyboards";
+        size_t len = strlen(xdg_data_home) + strlen(subdir) + 1;
+        user_data_dir = (char*)malloc(len);
+        if (user_data_dir != NULL) {
+            snprintf(user_data_dir, len, "%s%s", xdg_data_home, subdir);
+        }
     }
-    n += hangul_keyboard_list_load_dir(user_data_dir);
+    if (user_data_dir != NULL) {
+        n += hangul_keyboard_list_load_dir(user_data_dir);
+        free(user_data_dir);
+    }
 
     if (n == 0)
 	return 1;
