@@ -2,6 +2,7 @@
 
 
 test -f ChangeLog || touch ChangeLog
+test -f config.rpath || touch config.rpath
 
 libtoolize=`which glibtoolize`
 if test -z "$libtoolize"; then

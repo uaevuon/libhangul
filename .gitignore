@@ -35,7 +35,7 @@ po/en@boldquot.header
 po/en@quot.header
 po/insert-header.sin
 po/ko.gmo
-po/libhangul.pot
+#po/libhangul.pot
 po/quot.sed
 po/remove-potcdate.sed
 po/remove-potcdate.sin
