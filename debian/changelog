@@ -1,7 +1,6 @@
-libhangul (0.1.0+git20170815-4.2~bionic0523~3beol) bionic; urgency=low
+libhangul (0.1.0+git20170815-2.1~cosmic0717~3beol) cosmic; urgency=low
 
   * https://github.com/choehwanjin/libhangul
-  * 신세벌식 P2
 
  -- floor <createsc@gmail.com>  Sat, 02 Feb 2013 22:58:35 +0900
 

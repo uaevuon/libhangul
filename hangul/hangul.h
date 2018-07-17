@@ -76,7 +76,6 @@ int     hangul_jamos_to_syllables(ucschar* dest, int destlen,
     #define libhangul_3beol
 #endif
 
-
 /* hangulinputcontext.c */
 typedef struct _HangulKeyboard        HangulKeyboard;
 typedef struct _HangulCombination     HangulCombination;
@@ -160,7 +159,10 @@ unsigned int hangul_keyboard_list_get_count();
 const char* hangul_keyboard_list_get_keyboard_id(unsigned int index_);
 const char* hangul_keyboard_list_get_keyboard_name(unsigned int index_);
 
-
+char** 
+libhangul_get_init_keyboard_ids (void);
+unsigned int 
+libhangul_get_init_keyboard_ids_length (void);
 
 /* combination */
 HangulCombination* hangul_combination_new(void);

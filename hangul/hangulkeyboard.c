@@ -111,7 +111,15 @@ const char sebeol_3moa_semoe_moeum_key_deprecated[] = {'\'', 'p', 0x00};
   // ㅗ, ㅜ, ㅡ
 const ucschar sebeol_3_moeum_value[] = {0x1169, 0x116e, 0x1173, 0x0000};
 
-
+#ifndef INIT_IDS_LENGTH
+#define INIT_IDS_LENGTH 9
+#endif
+static const char *keys[INIT_IDS_LENGTH] =
+            { "2", "2noshift", 
+                "3-90", "3-91", "3-p3", 
+                "3moa-semoe-2017", 
+                "3shin-2003", "3shin-p2",
+                NULL};
 
 typedef struct _HangulCombinationItem HangulCombinationItem;
 
@@ -2128,6 +2136,19 @@ hangul_keyboard_get_flag(const HangulKeyboard *keyboard, unsigned int option)
 
     return false;
 }
+
+unsigned int 
+libhangul_get_init_keyboard_ids_length ()
+{
+    return INIT_IDS_LENGTH - 1;
+}
+
+char** 
+libhangul_get_init_keyboard_ids ()
+{
+    return (char **)keys;
+}
+
 
 
 #endif /* libhangul_hangulkeyboard_addon_c */
