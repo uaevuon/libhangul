@@ -51,8 +51,8 @@ keyboards_info_DATA = \
 	3set_3-14-proposal.txt \
 	3set_32.png \
 	3set_32.txt \
-	3set_3ahn.png \
-	3set_3ahn.txt \
+	3set_3-ahn.png \
+	3set_3-ahn.txt \
 	3set_3moa-semoe-2014.png \
 	3set_3moa-semoe-2014.txt \
 	3set_3moa-semoe-2015.png \
