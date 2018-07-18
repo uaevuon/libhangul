@@ -610,7 +610,7 @@ static const HangulKeyboard hangul_keyboard_3_95 = {
 
 static const HangulKeyboard hangul_keyboard_3ahnmatae = {
     (char*)"3-ahn",
-    (char*)N_("Sebeolsik 3Ahnmatae"),
+    (char*)N_("Sebeolsik 3-Ahnmatae"),
     { (ucschar*)hangul_keyboard_table_3ahnmatae, NULL, NULL, NULL },
     { (HangulCombination*)&hangul_combination_ahn, NULL, NULL, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
