@@ -320,6 +320,9 @@ hangul_buffer_clear(HangulBuffer *buffer)
     buffer->stack[9]  = 0;
     buffer->stack[10] = 0;
     buffer->stack[11] = 0;
+
+    buffer->shift = 0;
+    buffer->right_oua = 0;
 }
 
 static int
