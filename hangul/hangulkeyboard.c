@@ -100,8 +100,10 @@ const ucschar sebeol_3_ext_step[] = {0x00AE, 0x2460, 0x2461, 0x2462, 0x2463, 0x2
 const char sebeol_3_moeum_key[] = {'8', '/', '9', 0x00};
   // ㅡ, ㅗ, ㅜ  // 신광조 계열
 const char sebeol_3shin_moeum_key[] = {'I', 'O', 'P', 0x00};
- // ㅗ, ㅜ  // 신세기 계열 2017~
-const char sebeol_3moa_semoe_moeum_key[] = {'.', 'p', 0x00};
+// ㅗ, ㅜ  // 신세기 계열 2018
+const char sebeol_3moa_semoe_2018_moeum_key[] = {'.', 'b', 0x00};
+ // ㅗ, ㅜ  // 신세기 계열 2017
+const char sebeol_3moa_semoe_2017_moeum_key[] = {'.', 'p', 0x00};
  // ㅗ, ㅜ  // 신세기 계열 2016
 const char sebeol_3moa_semoe_2016_moeum_key[] = {'[', 'p', 0x00};
  // ㅗ, ㅜ  // 신세기 계열 2014, 2015
@@ -117,7 +119,7 @@ const ucschar sebeol_3_moeum_value[] = {0x1169, 0x116e, 0x1173, 0x0000};
 static const char *keys[INIT_IDS_LENGTH] =
             { "2", "2noshift", 
                 "3-90", "3-91", "3-p3", 
-                "3moa-semoe-2017", 
+                "3moa-semoe-2018", 
                 "3shin-2003", "3shin-p2",
                 NULL};
 
@@ -273,6 +275,13 @@ static const HangulCombination hangul_combination_3moa_semoe_2017 = {
     true
 };
 
+static const HangulCombination hangul_combination_3moa_semoe_2018 = {
+    countof(hangul_combination_table_3moa_semoe_2018),
+    countof(hangul_combination_table_3moa_semoe_2018),
+    (HangulCombinationItem*)hangul_combination_table_3moa_semoe_2018,
+    true
+};
+
 static const HangulCombination hangul_replace_2_noshift = {
     countof(hangul_replace_table_2_noshift),
     countof(hangul_replace_table_2_noshift),
@@ -389,6 +398,13 @@ static const HangulCombination hangul_galmadeuli_3shin_p2 = {
     countof(hangul_galmadeuli_table_3shin_p2),
     countof(hangul_galmadeuli_table_3shin_p2),
     (HangulCombinationItem*)hangul_galmadeuli_table_3shin_p2,
+    true
+};
+
+static const HangulCombination hangul_galmadeuli_3moa_semoe_2018 = {
+    countof(hangul_galmadeuli_table_3moa_semoe_2018),
+    countof(hangul_galmadeuli_table_3moa_semoe_2018),
+    (HangulCombinationItem*)hangul_galmadeuli_table_3moa_semoe_2018,
     true
 };
 
@@ -902,7 +918,23 @@ static const HangulKeyboard hangul_keyboard_3moa_semoe_2017 = {
     true,
     0x0000,
     {true, false, true, false, false},
-    {(char*)&sebeol_3moa_semoe_moeum_key, (char*)&sebeol_3moa_symbol_key, NULL, NULL},
+    {(char*)&sebeol_3moa_semoe_2017_moeum_key, (char*)&sebeol_3moa_symbol_key, NULL, NULL},
+    {(ucschar*)&sebeol_3_moeum_value, (ucschar*)&sebeol_3_symbol_value, NULL, (ucschar*)&sebeol_3_ext_step},
+    {
+        (ucschar(*)(int, int, int))&hangul_ascii_to_symbol_semoe, NULL}
+};
+
+static const HangulKeyboard hangul_keyboard_3moa_semoe_2018 = {
+    (char*)"3moa-semoe-2018",
+    (char*)N_("Sebeolsik Semoe 2018"),
+    { (ucschar*)hangul_keyboard_table_3moa_semoe_2018, NULL, NULL, NULL },
+    { (HangulCombination*)&hangul_combination_3moa_semoe_2018, 
+        (HangulCombination*)&hangul_galmadeuli_3moa_semoe_2018, NULL, NULL },
+    HANGUL_KEYBOARD_TYPE_JASO,
+    true,
+    0x0000,
+    {true, false, true, false, false},
+    {(char*)&sebeol_3moa_semoe_2018_moeum_key, (char*)&sebeol_3moa_symbol_key, NULL, NULL},
     {(ucschar*)&sebeol_3_moeum_value, (ucschar*)&sebeol_3_symbol_value, NULL, (ucschar*)&sebeol_3_ext_step},
     {
         (ucschar(*)(int, int, int))&hangul_ascii_to_symbol_semoe, NULL}
@@ -1115,7 +1147,7 @@ static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_3_90,
     &hangul_keyboard_3_91_final,
     &hangul_keyboard_3_p3,
-    &hangul_keyboard_3moa_semoe_2017,
+    &hangul_keyboard_3moa_semoe_2018,
     &hangul_keyboard_3sun_2014,
     &hangul_keyboard_3shin_p2,
     &hangul_keyboard_2y,
@@ -1144,6 +1176,7 @@ static const HangulKeyboard* hangul_builtin_keyboards[] = {
     &hangul_keyboard_3moa_semoe_2014,
     &hangul_keyboard_3moa_semoe_2015,
     &hangul_keyboard_3moa_semoe_2016,
+    &hangul_keyboard_3moa_semoe_2017,
     &hangul_keyboard_3gimguk_38a_yet,
     &hangul_keyboard_3shin_1995,
     &hangul_keyboard_3shin_2003,
@@ -1488,6 +1521,17 @@ hangul_keyboard_combine(const HangulKeyboard* keyboard,
 	return 0;
 
     HangulCombination* combination = keyboard->combination[id];
+    
+    if (hangul_keyboard_get_flag(keyboard, HANGUL_KEYBOARD_FLAG_LOOSE_ORDER))
+    {
+        // 입력순서를 따지지 않을 때, 작은 값을 앞에 둔다.
+        ucschar temp = first;
+        if (first > second)
+        {
+            first = second;
+            second = temp;
+        }
+    }
     ucschar res = hangul_combination_combine(combination, first, second);
     return res;
 }

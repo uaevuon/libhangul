@@ -61,6 +61,8 @@ keyboards_info_DATA = \
 	3set_3moa-semoe-2016.txt \
 	3set_3moa-semoe-2017.png \
 	3set_3moa-semoe-2017.txt \
+	3set_3moa-semoe-2018.png \
+	3set_3moa-semoe-2018.txt \
 	3set_3shin-1995.png \
 	3set_3shin-1995.txt \
 	3set_3shin-2003.png \
