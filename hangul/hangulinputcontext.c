@@ -452,6 +452,10 @@ hangul_buffer_backspace(HangulBuffer *buffer)
         } else if (hangul_is_jungseong(ch)) {
         ch = hangul_buffer_peek(buffer);
         buffer->jungseong = hangul_is_jungseong(ch) ? ch : 0;
+        // 3beol *************
+        if (buffer->jungseong == 0) {
+            buffer->right_oua = 0;
+        }
         return true;
         } else if (hangul_is_jongseong(ch)) {
         ch = hangul_buffer_peek(buffer);
@@ -462,6 +466,10 @@ hangul_buffer_backspace(HangulBuffer *buffer)
         buffer->choseong = 0;
         buffer->jungseong = 0;
         buffer->jongseong = 0;
+        // 3beol *******************
+        buffer->shift = 0;
+        buffer->right_oua = 0;
+
         return true;
     }
     }
