@@ -2997,7 +2997,7 @@ hangul_ic_process_jaso_sebeol (HangulInputContext *hic, int ascii, ucschar ch)
                                     combine = true;
                                 }
                                 if (combine) {
-                                    jongseong = hangul_ic_combine(hic, hic->buffer.jongseong, ch);
+                                    jongseong = hangul_ic_combine(hic, hic->buffer.jongseong, jung_jongseong);
                                     if (jongseong == 0) {
                                         // 끝소리 조합이 안 되고 끝홑닿소리와 갈마들이 끝홑닿소리가 같으면, 갈마들이 연타 겹받침으로
                                         if (hic->option_galmadeuli_method) {

@@ -838,7 +838,9 @@ static const HangulKeyboard hangul_keyboard_3_p3 = {
     (char*)"3-p3",
     (char*)N_("Sebeolsik 3-P3"),
     { (ucschar*)hangul_keyboard_table_3_p3, NULL, NULL, NULL },
-    { (HangulCombination*)&hangul_combination_default_3, NULL, (HangulCombination*)&hangul_galmadeuli_3_p3, NULL },
+    { (HangulCombination*)&hangul_combination_default_3, 
+        NULL, 
+        (HangulCombination*)&hangul_galmadeuli_3_p3, NULL },
     HANGUL_KEYBOARD_TYPE_JASO,
     true,
     0x119e,
@@ -1532,6 +1534,7 @@ hangul_keyboard_combine(const HangulKeyboard* keyboard,
             second = temp;
         }
     }
+    
     ucschar res = hangul_combination_combine(combination, first, second);
     return res;
 }
