@@ -1,25 +1,26 @@
 Source: libhangul
-Section: libs
-Priority: optional
 Maintainer: Debian Korean L10N <debian-l10n-korean@lists.debian.org>
 Uploaders: Changwoo Ryu <cwryu@debian.org>
+Section: libs
+Priority: optional
+Build-Depends: autopoint,
+               check (>= 0.9.8),
+               debhelper-compat (= 12),
+               intltool,
+               pkg-config,
+               libexpat1-dev,
+Standards-Version: 4.4.1
 Homepage: https://github.com/choehwanjin/libhangul
 Vcs-Browser: https://salsa.debian.org/l10n-korean-team/libhangul
 Vcs-Git: https://salsa.debian.org/l10n-korean-team/libhangul.git
-Standards-Version: 4.1.2
-Build-Depends: autopoint,
-               check (>= 0.9.8),
-               debhelper (>= 9.20160114),
-               intltool,
-               autotools-dev,
-               dh-autoreconf,
-               pkg-config,
-               libexpat1-dev,
+Rules-Requires-Root: no
 
 Package: libhangul1
 Architecture: any
 Pre-Depends: ${misc:Pre-Depends}
-Depends: libhangul-data (>= ${source:Version}), ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libhangul-data (>= ${source:Version}),
 Multi-Arch: same
 Description: Hangul keyboard input library - runtime
  This library implements Hangul keyboard input with various types of
@@ -42,9 +43,11 @@ Description: Hangul keyboard input library - data
  This package contains the architecture independent data.
 
 Package: libhangul-dev
-Section: libdevel
 Architecture: any
-Depends: libhangul1 (= ${binary:Version}), ${misc:Depends}, ${shlibs:Depends}
+Section: libdevel
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         libhangul1 (= ${binary:Version}),
 Multi-Arch: same
 Description: Hangul keyboard input library - development files
  This library implements Hangul keyboard input with various types of

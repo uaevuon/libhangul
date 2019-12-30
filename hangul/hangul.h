@@ -156,8 +156,12 @@ void    hangul_keyboard_delete(HangulKeyboard *keyboard);
 void    hangul_keyboard_set_type(HangulKeyboard *keyboard, int type);
 
 unsigned int hangul_keyboard_list_get_count();
-const char* hangul_keyboard_list_get_keyboard_id(unsigned int index_);
-const char* hangul_keyboard_list_get_keyboard_name(unsigned int index_);
+
+const char* hangul_keyboard_list_get_keyboard_id(unsigned index_);
+const char* hangul_keyboard_list_get_keyboard_name(unsigned index_);
+const HangulKeyboard* hangul_keyboard_list_get_keyboard(const char* id);
+const char* hangul_keyboard_list_register_keyboard(HangulKeyboard* keyboard);
+HangulKeyboard* hangul_keyboard_list_unregister_keyboard(const char* id);
 
 char** 
 libhangul_get_init_keyboard_ids (void);

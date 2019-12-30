@@ -1,10 +1,10 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: libhangul
 Upstream-Contact: https://github.com/choehwanjin/libhangul
 Source: https://github.com/choehwanjin/libhangul/releases
 
 Files: *
-Copyright: 2004-2017 Choe Hwanjin
+Copyright: 2004-2019 Choe Hwanjin
 License: LGPL-2.1+
  See /usr/share/common-licenses/LGPL-2.1 for the full license.
 
@@ -42,6 +42,6 @@ License: BSD-3
  POSSIBILITY OF SUCH DAMAGE.
 
 Files: debian/*
-Copyright: 2008-2017 Changwoo Ryu
+Copyright: 2008-2019 Changwoo Ryu
 License: GPL-2+
  See /usr/share/common-licenses/GPL-2 for the full license.

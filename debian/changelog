@@ -1,9 +1,41 @@
-libhangul (0.1.0+git20170817-1.0~cosmic0924~3beol) cosmic; urgency=low
+libhangul (0.1.0+git20191003-2.0~eoan1221~3beol) eoan; urgency=low
 
   * https://github.com/choehwanjin/libhangul
 
  -- floor <createsc@gmail.com>  Sat, 02 Feb 2013 22:58:35 +0900
 
+libhangul (0.1.0+git20191003-2) unstable; urgency=medium
+
+  * debian/apparmor/abstraction/libhangul:
+    - Move from debian/libhangul.apparmor
+    - Fix path
+    - Add user-defined keyboards loading to the apparmor abstraction
+  * debian/tests/run-test: Use mktemp for executable path
+  * debian/patches/path-max.patch: Dropped. The upstream doesn't use
+    PATH_MAX anymore
+
+ -- Changwoo Ryu <cwryu@debian.org>  Thu, 05 Dec 2019 14:19:42 +0900
+
+libhangul (0.1.0+git20191003-1) unstable; urgency=medium
+
+  * New upstream version from git
+  * debian/libhangul1.symbols: Updated for 0.1.0+git20191003
+  * debian/changelog: Remove trailing newline
+  * debian/control: Build-Depends on debhelper-compat (= 12) instead of
+    debhelper
+  * debian/compat: Dropped
+  * debian/control: Add "Rules-Requires-Root: no"
+  * debian/copyright: Use https for the copyright format URL
+  * debian/control: Bump Standards-Version to 4.4.1
+  * debian/libhangul1.symbols: Add "Build-Depends-Package: libhangul-dev"
+  * debian/control: Drop useless Build-Depends on autotools-dev, dh-autoreconf
+  * debian/tests/{control,run-test}: Add autopkgtest
+  * debian/salsa-ci.yml: Add Salsa CI config
+  * debian/{libhangul.apparmor,libhangul-data.install}: Add apparmor
+    abstraction for libhangul
+
+ -- Changwoo Ryu <cwryu@debian.org>  Wed, 13 Nov 2019 13:47:39 +0900
+ 
 libhangul (0.1.0+git20170815-2) bionic; urgency=medium
 
   * debian/copyright: Update the copyright info

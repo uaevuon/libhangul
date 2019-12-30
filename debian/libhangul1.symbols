@@ -1,4 +1,5 @@
 libhangul.so.1 libhangul1 #MINVER#
+* Build-Depends-Package: libhangul-dev
  hangul_ic_connect_transition@Base 0.1.0
  hangul_ic_connect_translate@Base 0.1.0
  hangul_is_combining_mark@Base 0.1.0
@@ -61,7 +62,10 @@ libhangul.so.1 libhangul1 #MINVER#
  hangul_keyboard_list_get_keyboard_id@Base 0.1.0+git20170815
  hangul_keyboard_list_get_keyboard_name@Base 0.1.0+git20170815
  hangul_keyboard_list_init@Base 0.1.0+git20170815
+ hangul_keyboard_list_register_keyboard@Base 0.1.0+git20191003
+ hangul_keyboard_list_unregister_keyboard@Base 0.1.0+git20191003
  hangul_keyboard_new@Base 0.1.0
+ hangul_keyboard_new_from_file@Base 0.1.0+git20191003
  hangul_keyboard_set_type@Base 0.1.0
  hangul_keyboard_set_value@Base 0.1.0
  hangul_syllable_iterator_next@Base 0.1.0
