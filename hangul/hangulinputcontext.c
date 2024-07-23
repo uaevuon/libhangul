@@ -21,7 +21,11 @@
 
 #include <stdlib.h>
 #include <string.h>
+#ifndef _WIN32
 #include <strings.h>
+#else
+#define strcasecmp _stricmp
+#endif
 #include <ctype.h>
 #include <inttypes.h>
 #include <limits.h>
@@ -1554,11 +1558,11 @@ void hangul_ic_connect_callback(HangulInputContext* hic, const char* event,
     return;
 
     if (strcasecmp(event, "translate") == 0) {
-    hic->on_translate      = (HangulOnTranslate)callback;
-    hic->on_translate_data = user_data;
+        *(void**)(&hic->on_translate) = callback;
+	hic->on_translate_data = user_data;
     } else if (strcasecmp(event, "transition") == 0) {
-    hic->on_transition      = (HangulOnTransition)callback;
-    hic->on_transition_data = user_data;
+        *(void**)(&hic->on_transition) = callback;
+	hic->on_transition_data = user_data;
     }
 }
 
